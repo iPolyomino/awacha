@@ -3,10 +3,28 @@ package controllers
 import (
 	"net/http"
 
+	"cloud.google.com/go/datastore"
 	"github.com/gin-gonic/gin"
 	"github.com/iPolyomino/awacha/models"
 	"google.golang.org/appengine"
 )
+
+func FetchData() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		ctx := appengine.NewContext(c.Request)
+
+		address := c.Param("address")
+
+		text, err := models.FetchData(ctx, address)
+		if err == datastore.ErrNoSuchEntity {
+			c.String(http.StatusNotFound, "Not Found")
+			return
+		} else if err != nil {
+			c.String(http.StatusInternalServerError, "Internal Server Error")
+		}
+		c.String(http.StatusOK, text)
+	}
+}
 
 func StoreingData() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -24,9 +42,9 @@ func StoreingData() gin.HandlerFunc {
 		}
 		_, err := models.StoreingData(ctx, note)
 		if err != nil {
-			c.String(http.StatusInternalServerError, "The value was not saved")
+			c.String(http.StatusInternalServerError, "Internal Server Error")
 			return
 		}
-		c.String(http.StatusOK, "saved")
+		c.String(http.StatusCreated, "Created")
 	}
 }
