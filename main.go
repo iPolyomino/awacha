@@ -13,9 +13,7 @@ import (
 func main() {
 	r := gin.New()
 
-	r.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "Hello World!")
-	})
+	r.Use(indexHandler())
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "pong")
 	})
@@ -32,4 +30,10 @@ func main() {
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
 
 	appengine.Main()
+}
+
+func indexHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.String(http.StatusOK, "Hello World!")
+	}
 }
