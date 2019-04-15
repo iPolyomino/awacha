@@ -17,12 +17,12 @@ func FetchData() gin.HandlerFunc {
 
 		text, err := models.FetchData(ctx, address)
 		if err == datastore.ErrNoSuchEntity {
-			c.String(http.StatusNotFound, "Not Found")
+			c.String(http.StatusNotFound, "Not Found\n")
 			return
 		} else if err != nil {
-			c.String(http.StatusInternalServerError, "Internal Server Error")
+			c.String(http.StatusInternalServerError, "Internal Server Error\n")
 		}
-		c.String(http.StatusOK, text)
+		c.String(http.StatusOK, text+"\n")
 	}
 }
 
@@ -42,9 +42,9 @@ func StoreingData() gin.HandlerFunc {
 		}
 		_, err := models.StoreingData(ctx, note)
 		if err != nil {
-			c.String(http.StatusInternalServerError, "Internal Server Error")
+			c.String(http.StatusInternalServerError, "Internal Server Error\n")
 			return
 		}
-		c.String(http.StatusCreated, "Created")
+		c.String(http.StatusCreated, "Created\n")
 	}
 }
