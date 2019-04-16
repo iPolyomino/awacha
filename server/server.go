@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/iPolyomino/awacha/controllers"
@@ -21,7 +22,7 @@ func Run() {
 		group.POST("/:address", controllers.StoreingData())
 	}
 
-	http.Handle("/", r)
+	http.Handle("/", http.TimeoutHandler(r, 10*time.Second, "timeout"))
 
 	port := os.Getenv("PORT")
 	if port == "" {
