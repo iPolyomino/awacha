@@ -6,10 +6,80 @@
   </head>
   <body>
     <h1>awacha</h1>
-    <h3>simple note web application</h3>
+    <p>simple note web application</p>
+    <h3>Demo</h3>
     <div>
-      <p><a href="https://github.com/iPolyomino/awacha">Source Code</a></p>
-      <p>Author : <a href="https://polyomino.jp">Hagi</a></p>
+      <form name="curl" onsubmit="return submitNote();">
+        <p>
+          <select name="method" onchange="changeMethod()">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="DELETE">DELETE</option>
+          </select>
+          awacha.com/<input type="text" name="endpoint" />
+          <input type="submit" />
+          <span id="body-area" style="display:none;">
+            <br />
+            body : <input type="text" name="body" />
+          </span>
+        </p>
+      </form>
+      <p><code id="response"></code></p>
     </div>
+    <h3>Usage</h3>
+    <div>
+      <p><code>$ curl -X POST -d "hello world" awacha.com/helloworld</code></p>
+      <p><code>-> Created</code></p>
+      <p><code>$ curl awacha.com/helloworld</code></p>
+      <p><code>-> hello world</code></p>
+      <p><code>$ curl -X DELETE awacha.com/helloworld</code></p>
+      <p><code>-> Deleted</code></p>
+    </div>
+    <h3>Source Code</h3>
+    <div>
+      <p><a href="https://github.com/iPolyomino/awacha">awacha</a></p>
+    </div>
+    <h3>Licence</h3>
+    <div>
+      <p>
+        <a href="https://github.com/iPolyomino/awacha/blob/master/LICENSE"
+          >MIT</a
+        >
+      </p>
+    </div>
+    <h3>Author</h3>
+    <div>
+      <p><a href="https://polyomino.jp">Hagi</a></p>
+    </div>
+    <script>
+      const changeMethod = () => {
+        const bodyArea = document.getElementById("body-area");
+        if (curl.method.value === "POST") {
+          bodyArea.style.display = "block";
+        } else {
+          bodyArea.style.display = "none";
+        }
+      };
+
+      const submitNote = () => {
+        const endpoint = curl.endpoint.value;
+        if (endpoint === "") {
+          return false;
+        }
+
+        const args = {
+          method: curl.method.value
+        };
+        if (args.method === "POST") {
+          args.body = curl.body.value;
+        }
+
+        fetch(endpoint, args)
+          .then(res => res.text())
+          .then(data => (document.getElementById("response").innerText = data))
+          .catch(error => console.error(error));
+        return false;
+      };
+    </script>
   </body>
 </html>
