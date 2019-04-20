@@ -18,8 +18,9 @@ func Run() {
 	group := r.Group("/")
 	{
 		group.GET("/", indexHandler())
-		group.GET("/:address", controllers.FetchData())
-		group.POST("/:address", controllers.StoreingData())
+		group.GET("/:address", controllers.GetNote())
+		group.POST("/:address", controllers.PutNote())
+		group.DELETE("/:address", controllers.DeleteNote())
 	}
 
 	http.Handle("/", http.TimeoutHandler(r, 10*time.Second, "timeout"))

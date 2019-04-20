@@ -13,11 +13,8 @@ type Note struct {
 	Text    string
 }
 
-func FetchData(ctx context.Context, address string) (string, error) {
-	projectID := appengine.AppID(ctx)
-	if projectID == "None" {
-		projectID = "awacha-com"
-	}
+func GetNote(ctx context.Context, address string) (string, error) {
+	projectID := appengineAppID(ctx)
 
 	client, err := datastore.NewClient(ctx, projectID)
 	if err != nil {
@@ -28,19 +25,15 @@ func FetchData(ctx context.Context, address string) (string, error) {
 	noteKey := datastore.NameKey("awacha-store", address, nil)
 
 	var note Note
-	err = client.Get(ctx, noteKey, &note)
-	if err != nil {
+	if err := client.Get(ctx, noteKey, &note); err != nil {
 		return "", err
 	}
 
 	return note.Text, nil
 }
 
-func StoreingData(ctx context.Context, note Note) (*datastore.Key, error) {
-	projectID := appengine.AppID(ctx)
-	if projectID == "None" {
-		projectID = "awacha-com"
-	}
+func PutNote(ctx context.Context, note Note) (*datastore.Key, error) {
+	projectID := appengineAppID(ctx)
 
 	client, err := datastore.NewClient(ctx, projectID)
 	if err != nil {
@@ -57,4 +50,32 @@ func StoreingData(ctx context.Context, note Note) (*datastore.Key, error) {
 	}
 
 	return key, nil
+}
+
+func DeleteNote(ctx context.Context, address string) error {
+	projectID := appengineAppID(ctx)
+
+	client, err := datastore.NewClient(ctx, projectID)
+	if err != nil {
+		log.Fatalf("Could not create datastore client: %v", err)
+		return err
+	}
+
+	nameKey := datastore.NameKey("awacha-store", address, nil)
+
+	if err := client.Delete(ctx, nameKey); err != nil {
+		log.Fatalf("Could not delete %v: %v", address, err)
+		return err
+	}
+
+	return nil
+}
+
+func appengineAppID(ctx context.Context) string {
+	projectID := appengine.AppID(ctx)
+	if projectID == "None" {
+		projectID = "awacha-com"
+	}
+
+	return projectID
 }
