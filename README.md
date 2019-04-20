@@ -9,11 +9,14 @@ You can send and receive text from command line.
 ## Usage
 
 ```bash
-$ curl  -X POST -d "hello world" awacha.com/helloworld
+$ curl -X POST -d "hello world" awacha.com/helloworld
 -> Created
 
 $ curl awacha.com/helloworld
 -> hello world
+
+$ curl -X DELETE awacha.com/helloworld
+-> Deleted
 ```
 
 You can POST to any URL after slash of `awacha.com/`.
