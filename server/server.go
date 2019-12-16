@@ -17,7 +17,7 @@ func Run() {
 	r.LoadHTMLGlob("views/*.html")
 	group := r.Group("/")
 	{
-		group.GET("/", indexHandler())
+		group.GET("/", controllers.IndexHandler())
 		group.GET("/:address", controllers.GetNote())
 		group.POST("/:address", controllers.PutNote())
 		group.DELETE("/:address", controllers.DeleteNote())
@@ -33,10 +33,4 @@ func Run() {
 
 	log.Printf("Listening on port %s", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
-}
-
-func indexHandler() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", nil)
-	}
 }

@@ -72,10 +72,8 @@ func DeleteNote(ctx context.Context, address string) error {
 }
 
 func appengineAppID(ctx context.Context) string {
-	projectID := appengine.AppID(ctx)
-	if projectID == "None" {
-		projectID = "awacha-com"
+	if appengine.IsAppEngine() {
+		return appengine.AppID(ctx)
 	}
-
-	return projectID
+	return "awacha-com"
 }
