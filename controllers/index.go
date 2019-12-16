@@ -10,7 +10,7 @@ import (
 func IndexHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if strings.HasPrefix(c.Request.Header.Get("User-Agent"), "curl") {
-			c.File("views/awacha-com.txt")
+			c.File("views/awacha.txt")
 		} else {
 			c.HTML(http.StatusOK, "index.html", nil)
 		}
