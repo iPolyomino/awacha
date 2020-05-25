@@ -2,26 +2,38 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="simple note web application" />
+    <meta name="author" content="Hagi" />
     <title>awacha</title>
   </head>
   <body>
     <h1>awacha</h1>
+    <hr />
     <p>simple note web application</p>
+    <p>You can send and receive text from command line.</p>
     <h3>Demo</h3>
     <div>
       <form name="curl" onsubmit="return submitNote();">
-        <p>
-          <select name="method" onchange="changeMethod()">
-            <option value="GET">GET</option>
-            <option value="POST">POST</option>
-            <option value="DELETE">DELETE</option>
-          </select>
-          awacha.com/<input type="text" name="endpoint" />
-          <input type="submit" />
-          <span id="body-area" style="display:none;">
-            <br />
-            body : <input type="text" name="body" />
+        <div>
+          <p>
+            <label for="method">method : </label>
+            <select id="method" name="method" onchange="changeMethod()">
+              <option value="GET">GET</option>
+              <option value="POST">POST</option>
+              <option value="DELETE">DELETE</option>
+            </select>
+          </p>
+          <label for="endpoint">target URL</label>
+          <br />
+          <span>
+            awacha.com/<input id="endpoint" type="text" name="endpoint" />
+            <input type="submit" />
           </span>
+        </div>
+        <p id="body-area" style="display:none;">
+          <label for="submit-body">body : </label>
+          <input id="submit-body" type="text" name="body" />
         </p>
       </form>
       <p><code id="response"></code></p>

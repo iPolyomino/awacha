@@ -2,8 +2,6 @@
 
 simple note web application
 
-## Description
-
 You can send and receive text from command line.
 
 ## Usage
@@ -30,4 +28,3 @@ If POST to same URL, the saved text will be overwrite.
 ## Author
 
 [Hagi](https://github.com/iPolyomino)
-
