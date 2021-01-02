@@ -1,9 +1,9 @@
-runtime: go111
+runtime: go114
 
 handlers:
-- url: /favicon\.ico
-  static_files: favicon.ico
-  upload: favicon\.ico
-- url: /robots\.txt
-  static_files: robots.txt
-  upload: robots\.txt
+  - url: /favicon\.ico
+    static_files: favicon.ico
+    upload: favicon\.ico
+  - url: /robots\.txt
+    static_files: robots.txt
+    upload: robots\.txt
