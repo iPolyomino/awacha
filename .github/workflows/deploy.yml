@@ -18,3 +18,7 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
+      - id: "deploy"
+        uses: "google-github-actions/deploy-appengine@v1"
+      - id: "test"
+        run: 'curl "${{ steps.deploy.outputs.url }}"'
