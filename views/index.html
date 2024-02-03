@@ -1,190 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="simple note web application" />
-    <meta name="author" content="Hagi" />
-    <title>awacha</title>
-    <style>
-      body {
-        font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN",
-          "Hiragino Sans", Meiryo, sans-serif;
-      }
-      code {
-        font-size: 1.2em;
-      }
-      code > ul > li {
-        list-style-type: none;
-      }
-      @media (min-width: 1024px) {
-        main {
-          margin: 0 auto;
-          max-width: 1024px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <h1>awacha</h1>
-      <hr />
-      <p>"awacha" is a simple note web application.</p>
-      <p>You can upload and download text data on the web from the terminal.</p>
 
-      <section>
-        <h2>Usage</h2>
-        <p>You can POST to any URL after slash of ``awacha.com/''.</p>
-        <p>If POST to same URL, the saved text will be overwrite.</p>
-        <h3>Example of use</h3>
-        <div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="simple note web application" />
+  <meta name="author" content="Hagi" />
+  <title>awacha</title>
+  <style>
+    body {
+      font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN",
+        "Hiragino Sans", Meiryo, sans-serif;
+    }
+
+    code {
+      font-size: 1.2em;
+    }
+
+    code>ul>li {
+      list-style-type: none;
+    }
+
+    @media (min-width: 1024px) {
+      main {
+        margin: 0 auto;
+        max-width: 1024px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>awacha</h1>
+    <hr />
+    <p>"awacha" is a simple note web application.</p>
+    <p>You can upload and download text data on the web from the terminal.</p>
+
+    <section>
+      <h2>Usage</h2>
+      <p>You can POST to any URL after slash of ``awacha.com/''.</p>
+      <p>If POST to same URL, the saved text will be overwrite.</p>
+      <h3>Example of use</h3>
+      <div>
+        <ul>
+          <li>You want to copy the configuration file to my new computer</li>
+          <li>You have multiple computers and want to share a (long) URL</li>
+          <li>You want to share text data temporarily</li>
+        </ul>
+        <h4>Note</h4>
+        <p>
+          <strong>Do not upload sensitive documents.</strong> Awacha is a note
+          application that does not require authentication. In other words,
+          anyone can update, view, or delete the note you created.
+        </p>
+      </div>
+      <h3>Example</h3>
+      <div>
+        <h4>Create note</h4>
+        <code>
           <ul>
-            <li>You want to copy the configuration file to my new computer</li>
-            <li>You have multiple computers and want to share a (long) URL</li>
-            <li>You want to share text data temporarily</li>
+            <li>$ curl -X POST -d "hello world" awacha.com/helloworld</li>
+            <li>&gt; Created</li>
           </ul>
-          <h4>Note</h4>
-          <p>
-            <strong>Do not upload sensitive documents.</strong> Awacha is a note
-            application that does not require authentication. In other words,
-            anyone can update, view, or delete the note you created.
-          </p>
-        </div>
-        <h3>Example</h3>
-        <div>
-          <h4>Create note</h4>
-          <code>
-            <ul>
-              <li>$ curl -X POST -d "hello world" awacha.com/helloworld</li>
-              <li>&gt; Created</li>
-            </ul>
-          </code>
-          You can also send a text file.
-          <code>
-            <ul>
-              <li>
-                # Create a file to send in advance.
-                <samp>(e.g., .vimrc)</samp>
-              </li>
-              <li>
-                $ curl -X POST --data-binary @$HOME/.vimrc awacha.com/vimrc
-              </li>
-              <li>&gt; Created</li>
-            </ul>
-          </code>
-          <h4>Get note</h4>
-          <code>
-            <ul>
-              <li>$ curl awacha.com/helloworld</li>
-              <li>&gt; hello world</li>
-            </ul>
-          </code>
-          You can also save the file using the <code>wget</code> command.
-          <code>
-            <ul>
-              <li>$ wget awacha.com/vimrc -o .vimrc</li>
-              <li>$ cat .vimrc</li>
-              <li>&gt; syntax on</li>
-              <li>&gt; set fenc=utf-8</li>
-              <li>&gt; set nobackup</li>
-              <li>&gt; set noswapfile</li>
-            </ul>
-          </code>
-          <h4>Delete note</h4>
-          <code>
-            <ul>
-              <li>$ curl -X DELETE awacha.com/helloworld</li>
-              <li>&gt; Deleted</li>
-            </ul>
-          </code>
-        </div>
-      </section>
+        </code>
+        You can also send a text file.
+        <code>
+          <ul>
+            <li>
+              # Create a file to send in advance.
+              <samp>(e.g., .vimrc)</samp>
+            </li>
+            <li>
+              $ curl -X POST --data-binary @$HOME/.vimrc awacha.com/vimrc
+            </li>
+            <li>&gt; Created</li>
+          </ul>
+        </code>
+        <h4>Get note</h4>
+        <code>
+          <ul>
+            <li>$ curl awacha.com/helloworld</li>
+            <li>&gt; hello world</li>
+          </ul>
+        </code>
+        You can also save the file using the <code>wget</code> command.
+        <code>
+          <ul>
+            <li>$ wget awacha.com/vimrc -o .vimrc</li>
+            <li>$ cat .vimrc</li>
+            <li>&gt; syntax on</li>
+            <li>&gt; set fenc=utf-8</li>
+            <li>&gt; set nobackup</li>
+            <li>&gt; set noswapfile</li>
+          </ul>
+        </code>
+        <h4>Delete note</h4>
+        <code>
+          <ul>
+            <li>$ curl -X DELETE awacha.com/helloworld</li>
+            <li>&gt; Deleted</li>
+          </ul>
+        </code>
+      </div>
+    </section>
 
-      <section>
-        <h2>Demo</h2>
-        <div>
-          <form name="curl" onsubmit="return submitNote();">
-            <div>
-              <p>
-                <label for="method">method : </label>
-                <select id="method" name="method" onchange="changeMethod()">
-                  <option value="GET">GET</option>
-                  <option value="POST">POST</option>
-                  <option value="DELETE">DELETE</option>
-                </select>
-              </p>
-              <label for="endpoint">target URL</label>
-              <br />
-              <span>
-                awacha.com/<input id="endpoint" type="text" name="endpoint" />
-                <input type="submit" />
-              </span>
-            </div>
-            <p id="body-area" style="display: none">
-              <label for="submit-body">body : </label>
-              <input id="submit-body" type="text" name="body" />
+    <section>
+      <h2>Demo</h2>
+      <div>
+        <form name="curl" onsubmit="return submitNote();">
+          <div>
+            <p>
+              <label for="method">method : </label>
+              <select id="method" name="method" onchange="changeMethod()">
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="DELETE">DELETE</option>
+              </select>
             </p>
-          </form>
-          <p><code id="response"></code></p>
-        </div>
-      </section>
-
-      <section>
-        <h2>Source Code</h2>
-        <div>
-          <p><a href="https://github.com/iPolyomino/awacha">awacha</a></p>
-        </div>
-      </section>
-
-      <section>
-        <h2>Licence</h2>
-        <div>
-          <p>
-            <a href="https://github.com/iPolyomino/awacha/blob/master/LICENSE"
-              >MIT</a
-            >
+            <label for="endpoint">target URL</label>
+            <br />
+            <span>
+              awacha.com/<input id="endpoint" type="text" name="endpoint" />
+              <input type="submit" />
+            </span>
+          </div>
+          <p id="body-area" style="display: none">
+            <label for="submit-body">body : </label>
+            <input id="submit-body" type="text" name="body" />
           </p>
-        </div>
-      </section>
+        </form>
+        <p><code id="response"></code></p>
+      </div>
+    </section>
 
-      <section>
-        <h2>Copyright</h2>
-        <div>
-          <p>&copy; 2019-2021 <a href="https://polyomino.jp">Hagi</a></p>
-        </div>
-      </section>
-    </main>
-    <script>
-      const changeMethod = () => {
-        const bodyArea = document.getElementById("body-area");
-        if (curl.method.value === "POST") {
-          bodyArea.style.display = "block";
-        } else {
-          bodyArea.style.display = "none";
-        }
-      };
+    <section>
+      <h2>Source Code</h2>
+      <div>
+        <p><a href="https://github.com/iPolyomino/awacha">awacha</a></p>
+      </div>
+    </section>
 
-      const submitNote = () => {
-        const endpoint = curl.endpoint.value;
-        if (endpoint === "") {
-          return false;
-        }
+    <section>
+      <h2>Licence</h2>
+      <div>
+        <p>
+          <a href="https://github.com/iPolyomino/awacha/blob/master/LICENSE">MIT</a>
+        </p>
+      </div>
+    </section>
 
-        const args = {
-          method: curl.method.value,
-        };
-        if (args.method === "POST") {
-          args.body = curl.body.value;
-        }
+    <section>
+      <h2>Copyright</h2>
+      <div>
+        <p>&copy; 2019-2024 <a href="https://polyomino.jp">Hagi</a></p>
+      </div>
+    </section>
+  </main>
+  <script>
+    const changeMethod = () => {
+      const bodyArea = document.getElementById("body-area");
+      if (curl.method.value === "POST") {
+        bodyArea.style.display = "block";
+      } else {
+        bodyArea.style.display = "none";
+      }
+    };
 
-        fetch(endpoint, args)
-          .then((res) => res.text())
-          .then(
-            (data) => (document.getElementById("response").innerText = data)
-          )
-          .catch((error) => console.error(error));
+    const submitNote = () => {
+      const endpoint = curl.endpoint.value;
+      if (endpoint === "") {
         return false;
+      }
+
+      const args = {
+        method: curl.method.value,
       };
-    </script>
-  </body>
+      if (args.method === "POST") {
+        args.body = curl.body.value;
+      }
+
+      fetch(endpoint, args)
+        .then((res) => res.text())
+        .then(
+          (data) => (document.getElementById("response").innerText = data)
+        )
+        .catch((error) => console.error(error));
+      return false;
+    };
+  </script>
+</body>
+
 </html>
