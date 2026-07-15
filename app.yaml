@@ -1,4 +1,4 @@
-runtime: go123
+runtime: go125
 app_engine_apis: false
 env_variables:
   GIN_MODE: "release"
