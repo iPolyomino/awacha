@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func TextIndexHandler(t *testing.T) {
+func TestEmptyIndexHandler(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
 	r := gin.Default()
