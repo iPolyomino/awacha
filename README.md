@@ -4,6 +4,25 @@
 
 You can upload and download text data on the web from the terminal.
 
+## Local development
+
+The local server uses an in-memory note store, so Google Cloud credentials and
+Datastore setup are not required.
+
+```bash
+go run .
+```
+
+The server is available at `http://localhost:8080`. Notes stored locally are
+discarded when the process stops. On App Engine, awacha automatically uses
+Google Cloud Datastore instead.
+
+Run the test suite with:
+
+```bash
+go test ./...
+```
+
 ## Usage
 
 You can POST to any URL after slash of `awacha.com/`.

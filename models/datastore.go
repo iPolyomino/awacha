@@ -2,7 +2,7 @@ package models
 
 import (
 	"context"
-	"log"
+	"sync"
 
 	"cloud.google.com/go/datastore"
 	"google.golang.org/appengine"
@@ -13,14 +13,31 @@ type Note struct {
 	Text    string
 }
 
+var localNotes = struct {
+	sync.RWMutex
+	notes map[string]string
+}{
+	notes: make(map[string]string),
+}
+
 func GetNote(ctx context.Context, address string) (string, error) {
+	if !appengine.IsAppEngine() {
+		localNotes.RLock()
+		text, ok := localNotes.notes[address]
+		localNotes.RUnlock()
+		if !ok {
+			return "", datastore.ErrNoSuchEntity
+		}
+		return text, nil
+	}
+
 	projectID := appengineAppID(ctx)
 
 	client, err := datastore.NewClient(ctx, projectID)
 	if err != nil {
-		log.Fatalf("Could not create datastore client: %v", err)
 		return "", err
 	}
+	defer client.Close()
 
 	noteKey := datastore.NameKey("awacha-store", address, nil)
 
@@ -33,19 +50,24 @@ func GetNote(ctx context.Context, address string) (string, error) {
 }
 
 func PutNote(ctx context.Context, note Note) (*datastore.Key, error) {
+	noteKey := datastore.NameKey("awacha-store", note.Address, nil)
+	if !appengine.IsAppEngine() {
+		localNotes.Lock()
+		localNotes.notes[note.Address] = note.Text
+		localNotes.Unlock()
+		return noteKey, nil
+	}
+
 	projectID := appengineAppID(ctx)
 
 	client, err := datastore.NewClient(ctx, projectID)
 	if err != nil {
-		log.Fatalf("Could not create datastore client: %v", err)
 		return nil, err
 	}
-
-	noteKey := datastore.NameKey("awacha-store", note.Address, nil)
+	defer client.Close()
 
 	key, err := client.Put(ctx, noteKey, &note)
 	if err != nil {
-		log.Fatalf("Could not save %v: %v", note, err)
 		return nil, err
 	}
 
@@ -53,18 +75,24 @@ func PutNote(ctx context.Context, note Note) (*datastore.Key, error) {
 }
 
 func DeleteNote(ctx context.Context, address string) error {
+	if !appengine.IsAppEngine() {
+		localNotes.Lock()
+		delete(localNotes.notes, address)
+		localNotes.Unlock()
+		return nil
+	}
+
 	projectID := appengineAppID(ctx)
 
 	client, err := datastore.NewClient(ctx, projectID)
 	if err != nil {
-		log.Fatalf("Could not create datastore client: %v", err)
 		return err
 	}
+	defer client.Close()
 
 	nameKey := datastore.NameKey("awacha-store", address, nil)
 
 	if err := client.Delete(ctx, nameKey); err != nil {
-		log.Fatalf("Could not delete %v: %v", address, err)
 		return err
 	}
 
